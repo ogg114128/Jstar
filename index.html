@@ -4,41 +4,60 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jstar Cannabis Shop</title>
-  <link rel="icon" href="assets/jstar-logo.png" type="image/png">
+  <link rel="icon" href="assets/jstar-logo.png">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 text-gray-900">
-  <!-- Navbar -->
-  <nav class="bg-white shadow sticky top-0 z-50">
-    <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-      <div class="flex items-center gap-3">
-        <img src="assets/jstar-logo.png" alt="Jstar Logo" class="h-10" />
-        <span class="text-xl font-bold text-green-800">Jstar</span>
-      </div>
-      <div class="relative group">
-        <button class="text-gray-700 hover:text-green-700 font-semibold">Strains ▾</button>
-        <div class="absolute hidden group-hover:block bg-white border rounded shadow mt-2 w-40">
-          <a href="product.html?strain=OGKush" class="block px-4 py-2 hover:bg-gray-100">OG Kush</a>
-          <a href="product.html?strain=JokerzCandy" class="block px-4 py-2 hover:bg-gray-100">Jokerz Candy</a>
-          <a href="product.html?strain=Gelato" class="block px-4 py-2 hover:bg-gray-100">Gelato</a>
-          <a href="product.html?strain=LemonHaze" class="block px-4 py-2 hover:bg-gray-100">Lemon Haze</a>
-          <a href="product.html?strain=PurplePunch" class="block px-4 py-2 hover:bg-gray-100">Purple Punch</a>
-        </div>
-      </div>
-    </div>
-  </nav>
-  <!-- Hero / Banner -->
-  <section class="bg-green-800 text-white py-20 px-6 text-center">
-    <h1 class="text-4xl md:text-6xl font-bold mb-4">Jstar Cannabis Shop</h1>
-    <p class="text-lg md:text-2xl">Global parcel delivery of premium cannabis. Safe. Fast. Discreet.</p>
+  <!-- Top Banner -->
+  <section class="bg-green-800 text-white py-6 px-4 text-center">
+    <h1 class="text-3xl md:text-5xl font-bold">Jstar Cannabis Shop</h1>
+    <p class="text-md md:text-xl mt-2">Global parcel delivery of premium cannabis. Safe. Fast. Discreet.</p>
   </section>
 
+  <!-- Navigation Bar -->
+  <header class="sticky top-0 z-50 bg-white shadow">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <img src="assets/jstar-logo.png" alt="Jstar Logo" class="h-10 w-10 object-contain">
+        <span class="text-xl font-bold text-green-800">Jstar</span>
+      </div>
+      <nav class="hidden md:flex gap-8 text-gray-700 font-medium">
+        <div class="relative group">
+          <button class="hover:text-green-700">Strains</button>
+          <div class="absolute hidden group-hover:block bg-white border mt-2 rounded shadow-md">
+            <a href="product.html?strain=OGKush" class="block px-4 py-2 hover:bg-gray-100">OG Kush</a>
+            <a href="product.html?strain=JokerzCandy" class="block px-4 py-2 hover:bg-gray-100">Jokerz Candy</a>
+            <a href="product.html?strain=Gelato" class="block px-4 py-2 hover:bg-gray-100">Gelato</a>
+            <a href="product.html?strain=LemonHaze" class="block px-4 py-2 hover:bg-gray-100">Lemon Haze</a>
+            <a href="product.html?strain=PurplePunch" class="block px-4 py-2 hover:bg-gray-100">Purple Punch</a>
+          </div>
+        </div>
+        <a href="#shipping" class="hover:text-green-700">Delivery</a>
+        <a href="#contact" class="hover:text-green-700">Contact</a>
+        <a href="#about" class="hover:text-green-700">About</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Existing sections remain unchanged below -->
   <!-- Site Service Introduction -->
   <section class="max-w-6xl mx-auto py-12 px-6">
     <h2 class="text-3xl font-semibold text-green-800 mb-6 text-center">Our Services</h2>
     <p class="text-center text-lg max-w-3xl mx-auto text-gray-700">
       Jstar is committed to providing the highest quality cannabis products with global shipping. We guarantee safe packaging, quick handling, and 100% discreet delivery to ensure your privacy and satisfaction.
     </p>
+  </section>
+
+  <!-- Product Preview Scroll Area -->
+  <section class="bg-white py-12">
+    <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-semibold text-green-800 mb-6 text-center">Our Strains</h2>
+      <div class="overflow-x-auto">
+        <div class="flex gap-6 w-max">
+          <!-- Product cards remain unchanged -->
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- Product Preview Scroll Area -->
