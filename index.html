@@ -156,13 +156,25 @@
     </script>
   </header>
 
-  <!-- Site Service Introduction -->
-  <section class="max-w-6xl mx-auto py-12 px-6">
-    <h2 class="text-3xl font-semibold text-green-800 mb-6 text-center">Our Services</h2>
-    <p class="text-center text-lg max-w-3xl mx-auto text-gray-700">
-      Jstar is committed to providing the highest quality cannabis with global shipping. We guarantee safe packaging, quick handling, and 100% discreet delivery to ensure your privacy and satisfaction.
-    </p>
-  </section>
+<!-- Site Service Introduction - 已替换为滚动海报展示 -->
+<section class="max-w-6xl mx-auto py-12 px-6">
+  <h2 class="text-3xl font-semibold text-green-800 mb-6 text-center">Featured Highlights</h2>
+  <div class="relative overflow-hidden">
+    <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth" id="poster-carousel">
+      <!-- 示例海报项，图片比例1:1，后续替换href即可跳转 -->
+      <a href="#" class="min-w-[250px] max-w-[250px] aspect-square bg-white border rounded-xl shadow transform hover:scale-105 transition-all duration-300 snap-start">
+        <img src="assets/poster1.jpg" alt="Poster 1" class="w-full h-full object-cover rounded-xl" />
+      </a>
+      <a href="#" class="min-w-[250px] max-w-[250px] aspect-square bg-white border rounded-xl shadow transform hover:scale-105 transition-all duration-300 snap-start">
+        <img src="assets/poster2.jpg" alt="Poster 2" class="w-full h-full object-cover rounded-xl" />
+      </a>
+      <a href="#" class="min-w-[250px] max-w-[250px] aspect-square bg-white border rounded-xl shadow transform hover:scale-105 transition-all duration-300 snap-start">
+        <img src="assets/poster3.jpg" alt="Poster 3" class="w-full h-full object-cover rounded-xl" />
+      </a>
+    </div>
+  </div>
+  <!-- 说明：将 href="#" 替换为实际跳转页面链接，poster1.jpg/2.jpg/3.jpg 替换为实际图片 -->
+</section>
   
           <!-- Product cards remain unchanged -->
         </div>
