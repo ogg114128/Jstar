@@ -38,7 +38,6 @@
   </footer>
 
   <script>
-    // Product data matching homepage strains
     const strains = {
       OGKush: {
         name: "OG Kush",
@@ -50,7 +49,7 @@
       },
       JokerzCandy: {
         name: "Jokerz Candy",
-        img: "<!-- 插入Jokerz Candy图片链接 -->",
+        img: "assets/jokerz-candy.jpg",
         thc: "24%",
         aroma: "Sweet and fruity scent",
         experience: "Uplifting and energetic buzz",
@@ -58,7 +57,7 @@
       },
       Gelato: {
         name: "Gelato",
-        img: "<!-- 插入Gelato图片链接 -->",
+        img: "assets/gelato.jpg",
         thc: "21%",
         aroma: "Dessert-like aroma",
         experience: "Balanced body high and calm mind",
@@ -66,7 +65,7 @@
       },
       LemonHaze: {
         name: "Lemon Haze",
-        img: "<!-- 插入Lemon Haze图片链接 -->",
+        img: "assets/lemon-haze.jpg",
         thc: "19%",
         aroma: "Citrus and lemon notes",
         experience: "Energetic and creative head high",
@@ -74,7 +73,7 @@
       },
       PurplePunch: {
         name: "Purple Punch",
-        img: "<!-- 插入Purple Punch图片链接 -->",
+        img: "assets/purple-punch.jpg",
         thc: "25%",
         aroma: "Grape and berry scent",
         experience: "Deeply relaxing and calming",
@@ -82,7 +81,6 @@
       }
     };
 
-    // Parse URL param 'strain'
     function getQueryParam(param) {
       const urlParams = new URLSearchParams(window.location.search);
       return urlParams.get(param);
@@ -100,7 +98,6 @@
       document.getElementById("experience").textContent = `Experience: ${strain.experience}`;
       document.getElementById("recommendation").textContent = `Recommendation: ${strain.recommendation}`;
     } else {
-      // If strain param invalid or missing
       document.getElementById("product-info").innerHTML = `
         <h2 class="text-2xl font-semibold text-red-600 mb-4">Product Not Found</h2>
         <p class="mb-4">The product you are looking for does not exist. Please return to the <a href="index.html" class="text-green-700 underline">shop homepage</a>.</p>
