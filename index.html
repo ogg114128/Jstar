@@ -156,25 +156,60 @@
     </script>
   </header>
 
-<!-- Site Service Introduction - 已替换为滚动海报展示 -->
+<!-- Site Service Introduction - 替换为具有物理滚动动画的滑动展示 -->
 <section class="max-w-6xl mx-auto py-12 px-6">
   <h2 class="text-3xl font-semibold text-green-800 mb-6 text-center">Featured Highlights</h2>
-  <div class="relative overflow-hidden">
-    <div class="flex gap-4 overflow-x-auto snap-x snap-mandatory scroll-smooth" id="poster-carousel">
-      <!-- 示例海报项，图片比例1:1，后续替换href即可跳转 -->
-      <a href="#" class="min-w-[250px] max-w-[250px] aspect-square bg-white border rounded-xl shadow transform hover:scale-105 transition-all duration-300 snap-start">
-        <img src="assets/poster1.jpg" alt="Poster 1" class="w-full h-full object-cover rounded-xl" />
-      </a>
-      <a href="#" class="min-w-[250px] max-w-[250px] aspect-square bg-white border rounded-xl shadow transform hover:scale-105 transition-all duration-300 snap-start">
-        <img src="assets/poster2.jpg" alt="Poster 2" class="w-full h-full object-cover rounded-xl" />
-      </a>
-      <a href="#" class="min-w-[250px] max-w-[250px] aspect-square bg-white border rounded-xl shadow transform hover:scale-105 transition-all duration-300 snap-start">
-        <img src="assets/poster3.jpg" alt="Poster 3" class="w-full h-full object-cover rounded-xl" />
-      </a>
+  <div class="relative">
+    <!-- 外部容器包裹，用于添加遮罩渐隐效果 -->
+    <div class="relative overflow-hidden">
+      <div id="inertia-carousel" class="flex gap-4 overflow-x-scroll snap-x snap-mandatory scroll-smooth px-2" style="scroll-behavior: smooth; -webkit-overflow-scrolling: touch;">
+        <a href="#" class="min-w-[250px] max-w-[250px] aspect-square bg-white border rounded-xl shadow transform transition-transform duration-500 ease-in-out snap-center">
+          <img src="assets/poster1.jpg" alt="Poster 1" class="w-full h-full object-cover rounded-xl" />
+        </a>
+        <a href="#" class="min-w-[250px] max-w-[250px] aspect-square bg-white border rounded-xl shadow transform transition-transform duration-500 ease-in-out snap-center">
+          <img src="assets/poster2.jpg" alt="Poster 2" class="w-full h-full object-cover rounded-xl" />
+        </a>
+        <a href="#" class="min-w-[250px] max-w-[250px] aspect-square bg-white border rounded-xl shadow transform transition-transform duration-500 ease-in-out snap-center">
+          <img src="assets/poster3.jpg" alt="Poster 3" class="w-full h-full object-cover rounded-xl" />
+        </a>
+      </div>
     </div>
   </div>
-  <!-- 说明：将 href="#" 替换为实际跳转页面链接，poster1.jpg/2.jpg/3.jpg 替换为实际图片 -->
 </section>
+
+<!-- 滑动物理动效脚本 - 模拟惯性和回弹（iOS风格） -->
+<script>
+  const carousel = document.getElementById('inertia-carousel');
+
+  let isDown = false;
+  let startX;
+  let scrollLeft;
+
+  carousel.addEventListener('mousedown', (e) => {
+    isDown = true;
+    carousel.classList.add('cursor-grabbing');
+    startX = e.pageX - carousel.offsetLeft;
+    scrollLeft = carousel.scrollLeft;
+  });
+
+  carousel.addEventListener('mouseleave', () => {
+    isDown = false;
+    carousel.classList.remove('cursor-grabbing');
+  });
+
+  carousel.addEventListener('mouseup', () => {
+    isDown = false;
+    carousel.classList.remove('cursor-grabbing');
+  });
+
+  carousel.addEventListener('mousemove', (e) => {
+    if (!isDown) return;
+    e.preventDefault();
+    const x = e.pageX - carousel.offsetLeft;
+    const walk = (x - startX) * 1.5; // 滑动距离乘速率
+    carousel.scrollLeft = scrollLeft - walk;
+  });
+</script>
   
           <!-- Product cards remain unchanged -->
         </div>
