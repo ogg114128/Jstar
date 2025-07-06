@@ -11,11 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
   carousel.insertBefore(lastClone, originalSlides[0]);
 
   const slides = carousel.querySelectorAll('a');
-  const slideCount = slides.length;
   const slideGap = parseInt(getComputedStyle(carousel).gap || '16');
   const slideWidth = slides[1].offsetWidth + slideGap;
-
   let currentIndex = 1;
+
   let isDown = false;
   let startX = 0;
   let scrollLeft = 0;
@@ -26,15 +25,15 @@ document.addEventListener('DOMContentLoaded', () => {
   let lastTime = 0;
 
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const centerOffset = (carousel.offsetWidth - slideWidth) / 2;
 
   // 初始化位置
-  carousel.scrollLeft = slideWidth * currentIndex;
+  carousel.scrollLeft = slideWidth * currentIndex - centerOffset;
 
-  // 禁止图片点击跳转当前slide
+  // 禁止点击默认跳转行为
   slides.forEach(slide => {
-    slide.addEventListener('click', (e) => {
-      e.preventDefault();
-    });
+    slide.addEventListener('click', e => e.preventDefault());
+    slide.setAttribute('tabindex', '-1');
   });
 
   function updateSlideFocus(index) {
@@ -54,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function goToSlide(index) {
     currentIndex = index;
-    carousel.scrollTo({ left: slideWidth * index, behavior: 'smooth' });
+    carousel.scrollTo({ left: slideWidth * index - centerOffset, behavior: 'smooth' });
     updateSlideFocus(index);
   }
 
@@ -71,6 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (isTouchDevice) {
     carousel.style.scrollBehavior = 'auto';
+    carousel.style.overflowX = 'scroll';
 
     carousel.addEventListener('touchstart', (e) => {
       stopAutoScroll();
@@ -104,6 +104,7 @@ document.addEventListener('DOMContentLoaded', () => {
   } else {
     // PC端启用滚动自动播放和居中对齐
     carousel.style.scrollBehavior = 'smooth';
+    carousel.style.overflowX = 'scroll';
     startAutoScroll();
     carousel.addEventListener('mouseenter', stopAutoScroll);
     carousel.addEventListener('mouseleave', startAutoScroll);
@@ -111,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function applyMomentum(initialVelocity) {
     let v = initialVelocity * 1000;
-    const decay = 0.95;
+    const decay = 0.9;
     const minVelocity = 10;
     cancelAnimationFrame(momentumID);
 
@@ -129,29 +130,33 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function snapToNearest() {
-    const index = Math.round(carousel.scrollLeft / slideWidth);
+    const index = Math.round((carousel.scrollLeft + centerOffset) / slideWidth);
     goToSlide(index);
   }
 
   function checkLoop() {
+    const rawIndex = (carousel.scrollLeft + centerOffset) / slideWidth;
     if (carousel.scrollLeft <= 0) {
-      carousel.scrollLeft = slideWidth * (slideCount - 2);
-      currentIndex = slideCount - 2;
-    } else if (carousel.scrollLeft >= slideWidth * (slideCount - 1)) {
-      carousel.scrollLeft = slideWidth;
+      carousel.scrollLeft = slideWidth * (slides.length - 2) - centerOffset;
+      currentIndex = slides.length - 2;
+    } else if (carousel.scrollLeft >= slideWidth * (slides.length - 1)) {
+      carousel.scrollLeft = slideWidth - centerOffset;
       currentIndex = 1;
     } else {
-      currentIndex = Math.round(carousel.scrollLeft / slideWidth);
+      currentIndex = Math.round(rawIndex);
     }
+    updateSlideFocus(currentIndex);
   }
 
-  carousel.addEventListener('scroll', checkLoop);
+  carousel.addEventListener('scroll', () => {
+    requestAnimationFrame(checkLoop);
+  });
+
   updateSlideFocus(currentIndex);
 
   // 隐藏滚动条
   carousel.style.scrollbarWidth = 'none';
   carousel.style.msOverflowStyle = 'none';
-  carousel.style.overflow = 'hidden';
   carousel.classList.add('hide-scrollbar');
 
   const style = document.createElement('style');
