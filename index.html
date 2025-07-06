@@ -164,53 +164,27 @@
     <div class="relative overflow-hidden">
       <div id="inertia-carousel" class="flex gap-4 overflow-x-scroll snap-x snap-mandatory scroll-smooth px-2" style="scroll-behavior: smooth; -webkit-overflow-scrolling: touch;">
         <a href="#" class="min-w-[250px] max-w-[250px] aspect-square bg-white border rounded-xl shadow transform transition-transform duration-500 ease-in-out snap-center">
-          <img src="assets/poster1.jpg" alt="Poster 1" class="w-full h-full object-cover rounded-xl" />
+          <img src="assets/420-sales.jpg" alt="420-sales" class="w-full h-full object-cover rounded-xl" />
         </a>
         <a href="#" class="min-w-[250px] max-w-[250px] aspect-square bg-white border rounded-xl shadow transform transition-transform duration-500 ease-in-out snap-center">
-          <img src="assets/poster2.jpg" alt="Poster 2" class="w-full h-full object-cover rounded-xl" />
+          <img src="assets/btcbuy.jpg" alt="btcbuy" class="w-full h-full object-cover rounded-xl" />
         </a>
         <a href="#" class="min-w-[250px] max-w-[250px] aspect-square bg-white border rounded-xl shadow transform transition-transform duration-500 ease-in-out snap-center">
-          <img src="assets/poster3.jpg" alt="Poster 3" class="w-full h-full object-cover rounded-xl" />
+          <img src="assets/cbdoil.jpg" alt="cbdoil" class="w-full h-full object-cover rounded-xl" />
+        </a>
+        <a href="#" class="min-w-[250px] max-w-[250px] aspect-square bg-white border rounded-xl shadow transform transition-transform duration-500 ease-in-out snap-center">
+          <img src="assets/ship.jpg" alt="ship" class="w-full h-full object-cover rounded-xl" />
+        </a>
+        <a href="#" class="min-w-[250px] max-w-[250px] aspect-square bg-white border rounded-xl shadow transform transition-transform duration-500 ease-in-out snap-center">
+          <img src="assets/nightparty.jpg" alt="nightparty" class="w-full h-full object-cover rounded-xl" />
+        </a>
+        <a href="#" class="min-w-[250px] max-w-[250px] aspect-square bg-white border rounded-xl shadow transform transition-transform duration-500 ease-in-out snap-center">
+          <img src="assets/top.jpg" alt="top" class="w-full h-full object-cover rounded-xl" />
         </a>
       </div>
     </div>
   </div>
 </section>
-
-<!-- 滑动物理动效脚本 - 模拟惯性和回弹（iOS风格） -->
-<script>
-  const carousel = document.getElementById('inertia-carousel');
-
-  let isDown = false;
-  let startX;
-  let scrollLeft;
-
-  carousel.addEventListener('mousedown', (e) => {
-    isDown = true;
-    carousel.classList.add('cursor-grabbing');
-    startX = e.pageX - carousel.offsetLeft;
-    scrollLeft = carousel.scrollLeft;
-  });
-
-  carousel.addEventListener('mouseleave', () => {
-    isDown = false;
-    carousel.classList.remove('cursor-grabbing');
-  });
-
-  carousel.addEventListener('mouseup', () => {
-    isDown = false;
-    carousel.classList.remove('cursor-grabbing');
-  });
-
-  carousel.addEventListener('mousemove', (e) => {
-    if (!isDown) return;
-    e.preventDefault();
-    const x = e.pageX - carousel.offsetLeft;
-    const walk = (x - startX) * 1.5; // 滑动距离乘速率
-    carousel.scrollLeft = scrollLeft - walk;
-  });
-</script>
-  
           <!-- Product cards remain unchanged -->
         </div>
       </div>
@@ -307,5 +281,6 @@
   <footer class="bg-green-900 text-white py-6 text-center">
     <p>&copy; 2025 Jstar Cannabis Shop — All Rights Reserved.</p>
   </footer>
+<script src="inertia-slider.js"></script>
 </body>
 </html>
