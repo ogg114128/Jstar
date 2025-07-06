@@ -1,9 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jstar Cannabis Shop</title>
+<title>Jstar Cannabis Shop</title>
   <link rel="icon" href="assets/jstar-logo.png">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -12,36 +7,62 @@
     .group:focus-within .group-hover\\:flex {
       display: flex !important;
     }
-    /* 解决尾部gap过大问题，导航靠左 */
+    /* 顶部banner花哨的阴影线条效果 */
+    .banner-bg {
+      position: relative;
+      overflow: hidden;
+      background: #166534;
+    }
+    .banner-bg::before, .banner-bg::after {
+      content: "";
+      position: absolute;
+      left: 0; right: 0;
+      height: 16px;
+      background: repeating-linear-gradient(135deg, rgba(255,255,255,0.13) 0 2px, transparent 2px 8px);
+      z-index: 2;
+    }
+    .banner-bg::before {
+      top: 0;
+      opacity: 0.5;
+    }
+    .banner-bg::after {
+      bottom: 0;
+      opacity: 0.3;
+      height: 22px;
+    }
+    /* PC端导航居中，logo和导航分两列 flex-1 */
     @media (min-width: 768px) {
-      .nav-align {
-        margin-left: 2rem; /* 控制导航靠左 */
+      .nav-center-container {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .nav-logo-area {
+        flex: 1 1 0%;
+        justify-content: flex-start;
+      }
+      .nav-menu-area {
+        flex: 1 1 0%;
+        justify-content: center;
       }
     }
   </style>
 </head>
 <body class="bg-gray-100 text-gray-900">
   <!-- Top Banner -->
-  <section class="bg-green-800 text-white py-6 px-4 text-center">
-    <h1 class="text-3xl md:text-5xl font-bold">Jstar Cannabis Shop</h1>
-    <p class="text-md md:text-xl mt-2">Global parcel delivery of premium cannabis. Safe. Fast. Discreet.</p>
+  <section class="banner-bg text-white py-8 px-4 text-center shadow-lg">
+    <h1 class="text-4xl md:text-6xl font-extrabold tracking-tight drop-shadow-xl">Jstar Cannabis Shop</h1>
   </section>
 
   <!-- Navigation Bar -->
   <header class="sticky top-0 z-50 bg-white shadow">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center">
-      <div class="flex items-center gap-3">
+    <div class="max-w-7xl mx-auto px-4 py-3 nav-center-container">
+      <div class="flex items-center gap-3 nav-logo-area">
         <img src="assets/jstar-logo.png" alt="Jstar Logo" class="h-10 w-10 object-contain">
         <span class="text-xl font-bold text-green-800">Jstar</span>
       </div>
-      <!-- Hamburger for mobile -->
-      <button id="nav-toggle" class="md:hidden ml-auto flex items-center text-green-800 focus:outline-none" aria-label="Open menu">
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
-        </svg>
-      </button>
-      <!-- Main Nav -->
-      <nav class="hidden md:flex nav-align gap-6 text-gray-700 font-medium items-center relative">
+      <!-- Main Nav PC端 居中 -->
+      <nav class="hidden md:flex nav-menu-area gap-8 text-gray-700 font-medium items-center relative">
         <div class="relative group">
           <button class="hover:text-green-700 flex items-center gap-1 focus:outline-none">
             Strains
@@ -49,7 +70,6 @@
               <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
             </svg>
           </button>
-          <!-- 下拉菜单采用flex可击穿空隙，鼠标移入或移出都不会自动隐藏 -->
           <div class="group-hover:flex hidden flex-col absolute left-0 mt-2 bg-white border rounded shadow-md min-w-[170px] z-40 transition-all">
             <a href="product.html?strain=OGKush" class="block px-4 py-2 hover:bg-gray-100 whitespace-nowrap">OG Kush</a>
             <a href="product.html?strain=JokerzCandy" class="block px-4 py-2 hover:bg-gray-100 whitespace-nowrap">Jokerz Candy</a>
@@ -58,10 +78,20 @@
             <a href="product.html?strain=PurplePunch" class="block px-4 py-2 hover:bg-gray-100 whitespace-nowrap">Purple Punch</a>
           </div>
         </div>
+        <a href="#news" class="hover:text-green-700">News</a>
         <a href="#shipping" class="hover:text-green-700">Delivery</a>
         <a href="#contact" class="hover:text-green-700">Contact</a>
         <a href="#about" class="hover:text-green-700">About</a>
       </nav>
+      <!-- Hamburger for mobile -->
+      <div class="md:hidden ml-auto flex items-center gap-2">
+        <span class="text-green-800 font-medium text-lg select-none">Menu</span>
+        <button id="nav-toggle" class="flex items-center text-green-800 focus:outline-none" aria-label="Open menu">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+          </svg>
+        </button>
+      </div>
     </div>
     <!-- Mobile Nav Menu -->
     <div id="mobile-menu" class="md:hidden hidden bg-white border-t">
@@ -81,6 +111,7 @@
             <a href="product.html?strain=PurplePunch" class="block py-2 hover:bg-gray-100">Purple Punch</a>
           </div>
         </div>
+        <a href="#news" class="py-2 hover:text-green-700">News</a>
         <a href="#shipping" class="py-2 hover:text-green-700">Delivery</a>
         <a href="#contact" class="py-2 hover:text-green-700">Contact</a>
         <a href="#about" class="py-2 hover:text-green-700">About</a>
@@ -105,12 +136,11 @@
     </script>
   </header>
 
-  <!-- Existing sections remain unchanged below -->
   <!-- Site Service Introduction -->
   <section class="max-w-6xl mx-auto py-12 px-6">
     <h2 class="text-3xl font-semibold text-green-800 mb-6 text-center">Our Services</h2>
     <p class="text-center text-lg max-w-3xl mx-auto text-gray-700">
-      Jstar is committed to providing the highest quality cannabis with shipping. We guarantee safe packaging, quick handling, and 100% discreet delivery to ensure your privacy and satisfaction.
+      Jstar is committed to providing the highest quality cannabis with global shipping. We guarantee safe packaging, quick handling, and 100% discreet delivery to ensure your privacy and satisfaction.
     </p>
   </section>
   
