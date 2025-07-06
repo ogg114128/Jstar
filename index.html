@@ -24,7 +24,7 @@
       <nav class="hidden md:flex gap-8 text-gray-700 font-medium">
         <div class="relative group">
           <button class="hover:text-green-700">Strains</button>
-          <div class="absolute left-0 invisible group-hover:visible opacity-0 group-hover:opacity-100 transition-opacity duration-200 bg-white border mt-2 rounded shadow-md z-10">
+          <div class="absolute hidden group-hover:block bg-white border mt-2 rounded shadow-md">
             <a href="product.html?strain=OGKush" class="block px-4 py-2 hover:bg-gray-100">OG Kush</a>
             <a href="product.html?strain=JokerzCandy" class="block px-4 py-2 hover:bg-gray-100">Jokerz Candy</a>
             <a href="product.html?strain=Gelato" class="block px-4 py-2 hover:bg-gray-100">Gelato</a>
@@ -39,6 +39,7 @@
     </div>
   </header>
 
+  <!-- Existing sections remain unchanged below -->
   <!-- Site Service Introduction -->
   <section class="max-w-6xl mx-auto py-12 px-6">
     <h2 class="text-3xl font-semibold text-green-800 mb-6 text-center">Our Services</h2>
@@ -46,13 +47,70 @@
       Jstar is committed to providing the highest quality cannabis products with global shipping. We guarantee safe packaging, quick handling, and 100% discreet delivery to ensure your privacy and satisfaction.
     </p>
   </section>
+  
+          <!-- Product cards remain unchanged -->
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- Product Preview Scroll Area -->
   <section class="bg-white py-12">
     <div class="max-w-6xl mx-auto px-6">
+      <h2 class="text-3xl font-semibold text-green-800 mb-6 text-center">Our Strains</h2>
       <div class="overflow-x-auto">
         <div class="flex gap-6 w-max">
-          <!-- Product cards remain unchanged -->
+
+          <!-- OG Kush -->
+          <div class="min-w-[280px] bg-gray-50 border rounded-xl shadow p-4 hover:scale-105 transform transition" onclick="location.href='product.html?strain=OGKush'">
+            <img src="assets/og-kush.jpg" alt="OG Kush" class="w-full h-40 object-cover rounded mb-3" />
+            <h3 class="text-xl font-bold text-green-800">OG Kush</h3>
+            <p class="text-sm text-gray-600">THC: 22%</p>
+            <p class="text-sm text-gray-600">A classic pine aroma with euphoric effect.</p>
+            <p class="text-sm text-yellow-500">★★★★★</p>
+            <button class="mt-2 bg-green-600 text-white px-4 py-1 rounded">Buy Now</button>
+          </div>
+
+          <!-- Jokerz Candy -->
+          <div class="min-w-[280px] bg-gray-50 border rounded-xl shadow p-4 hover:scale-105 transform transition" onclick="location.href='product.html?strain=JokerzCandy'">
+            <img src="assets/jokerz-candy.jpg" alt="Jokerz Candy" class="w-full h-40 object-cover rounded mb-3" />
+            <h3 class="text-xl font-bold text-green-800">Jokerz Candy</h3>
+            <p class="text-sm text-gray-600">THC: 24%</p>
+            <p class="text-sm text-gray-600">Sweet and fruity, uplifting buzz.</p>
+            <p class="text-sm text-yellow-500">★★★★★</p>
+            <button class="mt-2 bg-green-600 text-white px-4 py-1 rounded">Buy Now</button>
+          </div>
+
+          <!-- Gelato -->
+          <div class="min-w-[280px] bg-gray-50 border rounded-xl shadow p-4 hover:scale-105 transform transition" onclick="location.href='product.html?strain=Gelato'">
+            <img src="assets/gelato2.jpg" alt="Gelato" class="w-full h-40 object-cover rounded mb-3" />
+            <h3 class="text-xl font-bold text-green-800">Gelato</h3>
+            <p class="text-sm text-gray-600">THC: 21%</p>
+            <p class="text-sm text-gray-600">Dessert aroma, balanced body high.</p>
+            <p class="text-sm text-yellow-500">★★★★☆</p>
+            <button class="mt-2 bg-green-600 text-white px-4 py-1 rounded">Buy Now</button>
+          </div>
+
+          <!-- Lemon Haze -->
+          <div class="min-w-[280px] bg-gray-50 border rounded-xl shadow p-4 hover:scale-105 transform transition" onclick="location.href='product.html?strain=LemonHaze'">
+            <img src="assets/lemon-haze.jpg" alt="Lemon Haze" class="w-full h-40 object-cover rounded mb-3" />
+            <h3 class="text-xl font-bold text-green-800">Lemon Haze</h3>
+            <p class="text-sm text-gray-600">THC: 19%</p>
+            <p class="text-sm text-gray-600">Citrus notes, energetic head high.</p>
+            <p class="text-sm text-yellow-500">★★★★☆</p>
+            <button class="mt-2 bg-green-600 text-white px-4 py-1 rounded">Buy Now</button>
+          </div>
+
+          <!-- Purple Punch -->
+          <div class="min-w-[280px] bg-gray-50 border rounded-xl shadow p-4 hover:scale-105 transform transition" onclick="location.href='product.html?strain=PurplePunch'">
+            <img src="assets/purple-punch.jpg" alt="Purple Punch" class="w-full h-40 object-cover rounded mb-3" />
+            <h3 class="text-xl font-bold text-green-800">Purple Punch</h3>
+            <p class="text-sm text-gray-600">THC: 25%</p>
+            <p class="text-sm text-gray-600">Grape scent, deeply relaxing.</p>
+            <p class="text-sm text-yellow-500">★★★★★</p>
+            <button class="mt-2 bg-green-600 text-white px-4 py-1 rounded">Buy Now</button>
+          </div>
+
         </div>
       </div>
     </div>
@@ -66,7 +124,18 @@
         Jstar values every customer. We promise discreet global shipping, secure packaging, honest pricing, and responsive service. Our cannabis is tested and trusted.
       </p>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <!-- Testimonials remain unchanged -->
+        <div class="bg-white p-4 rounded shadow">
+          <p class="text-gray-700 italic">“Fast delivery and amazing quality. Will order again!”</p>
+          <p class="mt-2 font-semibold">– Alex, Australia</p>
+        </div>
+        <div class="bg-white p-4 rounded shadow">
+          <p class="text-gray-700 italic">“Packaging was super discreet. Product was top shelf.”</p>
+          <p class="mt-2 font-semibold">– Jin, Thailand</p>
+        </div>
+        <div class="bg-white p-4 rounded shadow">
+          <p class="text-gray-700 italic">“Trustworthy service and real wholesale prices.”</p>
+          <p class="mt-2 font-semibold">– Emma, Germany</p>
+        </div>
       </div>
     </div>
   </section>
