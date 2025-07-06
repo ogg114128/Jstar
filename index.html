@@ -4,6 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Jstar Cannabis Shop</title>
+  <link rel="icon" href="assets/jstar-logo.png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  
   <!-- Open Graph 基本元标签 -->
   <meta property="og:title" content="Jstar Cannabis Shop" />
   <meta property="og:description" content="Global delivery of premium cannabis. Discreet, fast, and safe." />
@@ -20,47 +24,36 @@
   <!-- Fallback for older crawlers -->
   <meta name="title" content="Jstar Cannabis Shop">
   <meta name="description" content="Global delivery of premium cannabis. Discreet, fast, and safe.">
-
-  <link rel="icon" href="assets/jstar-logo.png">
-  <script src="https://cdn.tailwindcss.com"></script>
+  
   <style>
-    /* PC端下拉菜单优化：鼠标移入主按钮或下拉内容都保持显示 */
+    body {
+      font-family: 'Share Tech Mono', monospace;
+    }
     .group:hover .group-hover\:flex,
     .group:focus-within .group-hover\:flex {
       display: flex !important;
     }
-    /* 顶部Banner花哨阴影装饰 */
     .fancy-bg {
       position: relative;
       overflow: hidden;
-      background: linear-gradient(120deg, #166534 80%, #34d399 100%);
-      box-shadow: 0 6px 30px -8px #16653455;
+      background: linear-gradient(135deg, #0f172a, #14532d);
     }
-    .fancy-bg:before, .fancy-bg:after {
+    .fancy-bg::before {
       content: '';
       position: absolute;
-      width: 300px;
-      height: 300px;
-      border-radius: 50%;
-      filter: blur(60px);
-      opacity: 0.17;
-      z-index: 1;
-    }
-    .fancy-bg:before {
-      top: -100px;
-      left: -120px;
-      background: #4ade80;
-    }
-    .fancy-bg:after {
-      bottom: -90px;
-      right: -100px;
-      background: #06b6d4;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('assets/smoke-bg.jpg') center/cover no-repeat;
+      opacity: 0.2;
+      filter: blur(8px);
+      z-index: 0;
     }
     .fancy-bg > * {
       position: relative;
-      z-index: 2;
+      z-index: 10;
     }
-    /* PC端导航居中 */
     @media (min-width: 768px) {
       .nav-center {
         position: absolute;
