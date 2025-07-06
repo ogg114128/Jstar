@@ -6,6 +6,13 @@
   <title>Jstar Cannabis Shop</title>
   <link rel="icon" href="assets/jstar-logo.png">
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* 下拉菜单不会因为鼠标从button到dropdown之间的间距而消失 */
+    .dropdown:hover .dropdown-menu,
+    .dropdown:focus-within .dropdown-menu {
+      display: block;
+    }
+  </style>
 </head>
 <body class="bg-gray-100 text-gray-900">
   <!-- Top Banner -->
@@ -21,10 +28,22 @@
         <img src="assets/jstar-logo.png" alt="Jstar Logo" class="h-10 w-10 object-contain">
         <span class="text-xl font-bold text-green-800">Jstar</span>
       </div>
-      <nav class="hidden md:flex gap-8 text-gray-700 font-medium">
-        <div class="relative group">
-          <button class="hover:text-green-700">Strains</button>
-          <div class="absolute hidden group-hover:block bg-white border mt-2 rounded shadow-md">
+      <!-- Hamburger for mobile -->
+      <button id="nav-toggle" class="md:hidden ml-auto flex items-center text-green-800 focus:outline-none" aria-label="Open menu">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+      </button>
+      <!-- Main Nav -->
+      <nav id="main-nav" class="hidden md:flex gap-6 text-gray-700 font-medium items-center ml-6">
+        <div class="relative dropdown">
+          <button class="hover:text-green-700 flex items-center gap-1 focus:outline-none" tabindex="0">
+            Strains
+            <svg class="w-4 h-4 mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          <div class="dropdown-menu absolute left-0 mt-2 hidden bg-white border rounded shadow-md min-w-[170px] z-40">
             <a href="product.html?strain=OGKush" class="block px-4 py-2 hover:bg-gray-100">OG Kush</a>
             <a href="product.html?strain=JokerzCandy" class="block px-4 py-2 hover:bg-gray-100">Jokerz Candy</a>
             <a href="product.html?strain=Gelato" class="block px-4 py-2 hover:bg-gray-100">Gelato</a>
@@ -37,6 +56,59 @@
         <a href="#about" class="hover:text-green-700">About</a>
       </nav>
     </div>
+    <!-- Mobile Nav Menu -->
+    <div id="mobile-menu" class="md:hidden hidden bg-white border-t">
+      <div class="px-4 py-3 flex flex-col gap-2">
+        <div class="dropdown w-full">
+          <button class="w-full text-left py-2 flex items-center gap-1 focus:outline-none" tabindex="0">
+            Strains
+            <svg class="w-4 h-4 mt-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          <div class="dropdown-menu hidden pl-4">
+            <a href="product.html?strain=OGKush" class="block py-2 hover:bg-gray-100">OG Kush</a>
+            <a href="product.html?strain=JokerzCandy" class="block py-2 hover:bg-gray-100">Jokerz Candy</a>
+            <a href="product.html?strain=Gelato" class="block py-2 hover:bg-gray-100">Gelato</a>
+            <a href="product.html?strain=LemonHaze" class="block py-2 hover:bg-gray-100">Lemon Haze</a>
+            <a href="product.html?strain=PurplePunch" class="block py-2 hover:bg-gray-100">Purple Punch</a>
+          </div>
+        </div>
+        <a href="#shipping" class="py-2 hover:text-green-700">Delivery</a>
+        <a href="#contact" class="py-2 hover:text-green-700">Contact</a>
+        <a href="#about" class="py-2 hover:text-green-700">About</a>
+      </div>
+    </div>
+    <script>
+      // Mobile nav toggle
+      const navToggle = document.getElementById('nav-toggle');
+      const mobileMenu = document.getElementById('mobile-menu');
+      navToggle.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+
+      // Mobile dropdown menu logic
+      document.querySelectorAll('#mobile-menu .dropdown > button').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const menu = this.nextElementSibling;
+          menu.classList.toggle('hidden');
+        });
+      });
+
+      // 保证PC端下拉菜单在获得焦点时不会立即消失
+      document.querySelectorAll('.dropdown').forEach(dropdown => {
+        // 允许键盘访问
+        dropdown.addEventListener('focusin', () => {
+          const menu = dropdown.querySelector('.dropdown-menu');
+          if (menu) menu.style.display = 'block';
+        });
+        dropdown.addEventListener('focusout', () => {
+          const menu = dropdown.querySelector('.dropdown-menu');
+          if (menu) menu.style.display = '';
+        });
+      });
+    </script>
   </header>
 
   <!-- Existing sections remain unchanged below -->
@@ -44,7 +116,7 @@
   <section class="max-w-6xl mx-auto py-12 px-6">
     <h2 class="text-3xl font-semibold text-green-800 mb-6 text-center">Our Services</h2>
     <p class="text-center text-lg max-w-3xl mx-auto text-gray-700">
-      Jstar is committed to providing the highest quality cannabis products with global shipping. We guarantee safe packaging, quick handling, and 100% discreet delivery to ensure your privacy and satisfaction.
+      Jstar is committed to providing the highest quality cannabis products with global shipping. We guarantee safe packaging, quick handling, and 100% discreet delivery to ensure your privacy and sat[...]
     </p>
   </section>
   
