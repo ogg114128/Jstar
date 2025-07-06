@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jstar Cannabis Shop - Product Details</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 text-gray-900">
+
+  <header class="bg-green-800 text-white py-6 px-6 text-center">
+    <h1 class="text-4xl font-bold">Jstar Cannabis Shop</h1>
+    <p class="mt-2 text-lg">Premium Cannabis Products - Product Details</p>
+  </header>
+
+  <main class="max-w-4xl mx-auto p-6">
+    <section id="product-info" class="bg-white rounded-lg shadow p-6 mb-8">
+      <h2 id="strain-name" class="text-3xl font-semibold text-green-800 mb-4"></h2>
+      <img id="strain-img" src="" alt="" class="w-full max-h-64 object-cover rounded mb-4" />
+      <p id="thc-content" class="mb-2 text-gray-700"></p>
+      <p id="aroma" class="mb-2 text-gray-700"></p>
+      <p id="experience" class="mb-4 text-gray-700"></p>
+      <p id="recommendation" class="mb-4 text-yellow-500 text-xl font-bold"></p>
+
+      <h3 class="text-xl font-semibold mb-2">Purchase</h3>
+      <p class="mb-4 text-gray-800">
+        To purchase, please contact us on Telegram: 
+        <a href="https://t.me/terpstars" target="_blank" rel="noopener noreferrer" class="text-green-700 underline">@terpstars</a>
+      </p>
+      <button onclick="history.back()" class="bg-green-700 text-white px-4 py-2 rounded hover:bg-green-900 transition">
+        &larr; Back to Shop
+      </button>
+    </section>
+  </main>
+
+  <footer class="bg-green-900 text-white py-6 text-center">
+    <p>&copy; 2025 Jstar Cannabis Shop — All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    // Product data matching homepage strains
+    const strains = {
+      OGKush: {
+        name: "OG Kush",
+        img: "<!-- 插入OG Kush图片链接 -->",
+        thc: "22%",
+        aroma: "Classic pine aroma",
+        experience: "Euphoric and relaxing effect",
+        recommendation: "★★★★★"
+      },
+      JokerzCandy: {
+        name: "Jokerz Candy",
+        img: "<!-- 插入Jokerz Candy图片链接 -->",
+        thc: "24%",
+        aroma: "Sweet and fruity scent",
+        experience: "Uplifting and energetic buzz",
+        recommendation: "★★★★★"
+      },
+      Gelato: {
+        name: "Gelato",
+        img: "<!-- 插入Gelato图片链接 -->",
+        thc: "21%",
+        aroma: "Dessert-like aroma",
+        experience: "Balanced body high and calm mind",
+        recommendation: "★★★★☆"
+      },
+      LemonHaze: {
+        name: "Lemon Haze",
+        img: "<!-- 插入Lemon Haze图片链接 -->",
+        thc: "19%",
+        aroma: "Citrus and lemon notes",
+        experience: "Energetic and creative head high",
+        recommendation: "★★★★☆"
+      },
+      PurplePunch: {
+        name: "Purple Punch",
+        img: "<!-- 插入Purple Punch图片链接 -->",
+        thc: "25%",
+        aroma: "Grape and berry scent",
+        experience: "Deeply relaxing and calming",
+        recommendation: "★★★★★"
+      }
+    };
+
+    // Parse URL param 'strain'
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    const strainKey = getQueryParam("strain");
+    const strain = strains[strainKey];
+
+    if (strain) {
+      document.getElementById("strain-name").textContent = strain.name;
+      document.getElementById("strain-img").src = strain.img;
+      document.getElementById("strain-img").alt = strain.name;
+      document.getElementById("thc-content").textContent = `THC Content: ${strain.thc}`;
+      document.getElementById("aroma").textContent = `Aroma: ${strain.aroma}`;
+      document.getElementById("experience").textContent = `Experience: ${strain.experience}`;
+      document.getElementById("recommendation").textContent = `Recommendation: ${strain.recommendation}`;
+    } else {
+      // If strain param invalid or missing
+      document.getElementById("product-info").innerHTML = `
+        <h2 class="text-2xl font-semibold text-red-600 mb-4">Product Not Found</h2>
+        <p class="mb-4">The product you are looking for does not exist. Please return to the <a href="index.html" class="text-green-700 underline">shop homepage</a>.</p>
+      `;
+    }
+  </script>
+</body>
+</html>
