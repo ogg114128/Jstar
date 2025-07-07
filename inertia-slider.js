@@ -24,17 +24,18 @@ document.addEventListener('DOMContentLoaded', () => {
   let velocity = 0;
   let lastX = 0;
   let lastTime = 0;
-  let isTouchScrolling = false; // 仅用于手机端
-  let isMouseDragging = false;  // 仅用于PC端
+  let isTouchScrolling = false;
+  let isMouseDragging = false;
 
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
   function getCenterOffset() {
     return (carousel.offsetWidth - slideWidth) / 2;
   }
+
   function scrollToIndex(index, behavior = 'instant') {
-    let offset = getCenterOffset();
-    let scrollTarget = slideWidth * index - offset;
+    const offset = getCenterOffset();
+    const scrollTarget = slideWidth * index - offset;
     if (behavior === 'smooth') {
       carousel.scrollTo({ left: scrollTarget, behavior: 'smooth' });
     } else {
@@ -43,29 +44,24 @@ document.addEventListener('DOMContentLoaded', () => {
     updateSlideFocus(index);
   }
 
-  slides.forEach(slide => {
-    slide.addEventListener('click', e => e.preventDefault());
-    slide.setAttribute('tabindex', '-1');
-  });
-
   function updateSlideFocus(index) {
     slides.forEach((slide, i) => {
+      slide.style.transition = 'filter 0.5s ease, transform 0.5s ease';
       if (i === index) {
         slide.style.filter = 'brightness(1) saturate(1)';
         slide.style.transform = 'scale(1)';
         slide.style.zIndex = '10';
       } else {
-        slide.style.filter = 'brightness(0.6) saturate(0.6)';
-        slide.style.transform = 'scale(0.9)';
+        slide.style.filter = 'brightness(0.4) saturate(0.6)';
+        slide.style.transform = 'scale(0.85)';
         slide.style.zIndex = '1';
       }
-      slide.style.transition = 'filter 0.5s ease, transform 0.5s ease';
     });
   }
 
   function goToSlide(index) {
     currentIndex = index;
-    scrollToIndex(currentIndex, 'smooth');
+    scrollToIndex(index, 'smooth');
   }
 
   function startAutoScroll() {
@@ -79,9 +75,8 @@ document.addEventListener('DOMContentLoaded', () => {
     clearInterval(autoScrollTimer);
   }
 
-  // 无限丝滑环状滚动的处理
   function seamlessLoop() {
-    let offset = getCenterOffset();
+    const offset = getCenterOffset();
     if (carousel.scrollLeft <= slideWidth * 0.3) {
       carousel.scrollLeft = slideWidth * (slides.length - 2) - offset;
       currentIndex = slides.length - 2;
@@ -93,7 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 只保留惯性动画，不回弹
   function applyMomentum(initialVelocity) {
     let v = initialVelocity * 1000;
     const decay = 0.92;
@@ -102,7 +96,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function step() {
       if (Math.abs(v) < minVelocity) {
-        // 不再吸附到中间，直接停
         isTouchScrolling = false;
         isMouseDragging = false;
         return;
@@ -115,7 +108,6 @@ document.addEventListener('DOMContentLoaded', () => {
     step();
   }
 
-  // 监听resize和图片加载，重新计算宽度和居中
   function recalcAndCenter() {
     slides = carousel.querySelectorAll('a');
     slideGap = parseInt(getComputedStyle(carousel).gap || '16');
@@ -130,9 +122,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  slides.forEach(slide => {
+    slide.addEventListener('click', e => e.preventDefault());
+    slide.setAttribute('tabindex', '-1');
+  });
+
   recalcAndCenter();
 
-  // 移动端滑动
   if (isTouchDevice) {
     carousel.style.scrollBehavior = 'auto';
     carousel.style.overflowX = 'scroll';
@@ -181,13 +177,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (isTouchScrolling) seamlessLoop();
     });
   } else {
-    // PC端 鼠标拖动支持
     carousel.style.scrollBehavior = 'auto';
     carousel.style.overflowX = 'scroll';
-    let mouseVelocity = 0;
 
     carousel.addEventListener('mousedown', (e) => {
-      // 仅主鼠标键
       if (e.button !== 0) return;
       stopAutoScroll();
       isMouseDragging = true;
@@ -198,7 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
       lastTime = Date.now();
       velocity = 0;
       cancelAnimationFrame(momentumID);
-      carousel.classList.add('dragging');
       e.preventDefault();
     });
 
@@ -218,28 +210,24 @@ document.addEventListener('DOMContentLoaded', () => {
       seamlessLoop();
     });
 
-    document.addEventListener('mouseup', (e) => {
+    document.addEventListener('mouseup', () => {
       if (!isMouseDragging) return;
       isMouseDragging = false;
       isDown = false;
-      carousel.classList.remove('dragging');
       if (Math.abs(velocity) > 0.05) {
         applyMomentum(velocity);
       }
       startAutoScroll();
     });
 
-    // 鼠标离开窗口时清理状态
-    document.addEventListener('mouseleave', (e) => {
+    document.addEventListener('mouseleave', () => {
       if (isMouseDragging) {
         isMouseDragging = false;
         isDown = false;
-        carousel.classList.remove('dragging');
       }
     });
 
-    // 滚轮操作丝滑无限
-    carousel.addEventListener('wheel', (e) => {
+    carousel.addEventListener('wheel', () => {
       stopAutoScroll();
       seamlessLoop();
     }, { passive: true });
@@ -253,14 +241,13 @@ document.addEventListener('DOMContentLoaded', () => {
     carousel.addEventListener('mouseleave', startAutoScroll);
   }
 
-  // 隐藏滚动条
   carousel.style.scrollbarWidth = 'none';
   carousel.style.msOverflowStyle = 'none';
   carousel.classList.add('hide-scrollbar');
+
   const style = document.createElement('style');
   style.innerHTML = `
     #inertia-carousel::-webkit-scrollbar { display: none; }
-    #inertia-carousel.dragging { cursor: grabbing !important; }
   `;
   document.head.appendChild(style);
 });
