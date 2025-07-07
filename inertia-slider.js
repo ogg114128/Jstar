@@ -1,11 +1,60 @@
 document.addEventListener('DOMContentLoaded', () => {
+  // 动态注入样式
+  const style = document.createElement('style');
+  style.innerHTML = `
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.7);
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: 24px;
+      cursor: pointer;
+      z-index: 1000;
+      user-select: none;
+      transition: background 0.3s ease;
+    }
+    .carousel-arrow:hover {
+      background: rgba(255, 255, 255, 1);
+    }
+    .left-arrow {
+      left: 8px;
+    }
+    .right-arrow {
+      right: 8px;
+    }
+    #inertia-carousel a.current {
+      filter: brightness(1) saturate(1);
+      transform: scale(1);
+      transition: filter 0.3s ease, transform 0.3s ease;
+      z-index: 10;
+    }
+    #inertia-carousel a:not(.current) {
+      filter: brightness(0.5) saturate(0.5);
+      transform: scale(0.85);
+      transition: filter 0.3s ease, transform 0.3s ease;
+      z-index: 1;
+    }
+    #inertia-carousel::-webkit-scrollbar {
+      display: none;
+    }
+    #inertia-carousel {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  `;
+  document.head.appendChild(style);
+
+  // 变量定义
   const carousel = document.getElementById('inertia-carousel');
   const prevBtn = document.getElementById('carousel-prev');
   const nextBtn = document.getElementById('carousel-next');
-
   if (!carousel || !prevBtn || !nextBtn) return;
 
-  // 克隆首尾实现无缝循环
+  // 克隆首尾实现无限循环
   const slidesOriginal = Array.from(carousel.querySelectorAll('a'));
   if (slidesOriginal.length === 0) return;
 
@@ -18,9 +67,9 @@ document.addEventListener('DOMContentLoaded', () => {
   let gap = parseInt(getComputedStyle(carousel).gap) || 16;
   let slideWidth = slides[1].offsetWidth + gap;
 
-  let currentIndex = 1; // 因为克隆插入的缘故，起始索引为1
+  let currentIndex = 1; // 克隆后第一张的索引
 
-  // 设置滚动至当前图片中心
+  // 使指定index的slide居中并标记高亮
   function centerSlide(index, behavior = 'auto') {
     const offset = (carousel.offsetWidth - slideWidth) / 2;
     const scrollPos = slideWidth * index - offset;
@@ -28,7 +77,7 @@ document.addEventListener('DOMContentLoaded', () => {
     updateActiveSlide(index);
   }
 
-  // 更新当前高亮状态
+  // 标记当前高亮
   function updateActiveSlide(index) {
     slides.forEach((slide, i) => {
       if (i === index) slide.classList.add('current');
@@ -36,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // 无限循环逻辑
+  // 无缝循环判断
   function loopCheck() {
     const offset = (carousel.offsetWidth - slideWidth) / 2;
     if (carousel.scrollLeft <= slideWidth * 0.3) {
@@ -50,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  // 绑定箭头事件
+  // 点击箭头事件
   prevBtn.addEventListener('click', () => {
     currentIndex = currentIndex <= 1 ? slides.length - 2 : currentIndex - 1;
     centerSlide(currentIndex, 'smooth');
@@ -61,11 +110,9 @@ document.addEventListener('DOMContentLoaded', () => {
     centerSlide(currentIndex, 'smooth');
   });
 
-  // 滚动事件，自动检测当前图片并循环
+  // 滚动监听，更新currentIndex和高亮，处理循环
   carousel.addEventListener('scroll', () => {
     loopCheck();
-
-    // 根据滚动位置计算最接近中心的图片索引
     const offset = (carousel.offsetWidth - slideWidth) / 2;
     let scrollPos = carousel.scrollLeft + offset;
     let idx = Math.round(scrollPos / slideWidth);
@@ -75,41 +122,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // 初始化居中第一张真实图片
+  // 适配窗口宽度变更
   window.addEventListener('resize', () => {
+    gap = parseInt(getComputedStyle(carousel).gap) || 16;
     slideWidth = slides[1].offsetWidth + gap;
     centerSlide(currentIndex, 'auto');
   });
 
+  // 初始居中
   centerSlide(currentIndex, 'auto');
 
-  // 移动端触摸支持
+  // 手机端隐藏箭头
   if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
-    // 无箭头，直接滑动即可，浏览器默认行为满足要求，无需额外JS处理
     prevBtn.style.display = 'none';
     nextBtn.style.display = 'none';
     carousel.style.scrollSnapType = 'x mandatory';
-  } else {
-    // PC端使用鼠标拖动支持（可选，可根据需求添加）
-    let isDragging = false;
-    let startX = 0;
-    let scrollStart = 0;
-
-    carousel.addEventListener('mousedown', e => {
-      isDragging = true;
-      startX = e.pageX;
-      scrollStart = carousel.scrollLeft;
-      carousel.classList.add('dragging');
-      e.preventDefault();
-    });
-    document.addEventListener('mouseup', () => {
-      isDragging = false;
-      carousel.classList.remove('dragging');
-    });
-    document.addEventListener('mousemove', e => {
-      if (!isDragging) return;
-      const dx = startX - e.pageX;
-      carousel.scrollLeft = scrollStart + dx;
-    });
   }
 });
