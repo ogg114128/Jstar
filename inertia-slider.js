@@ -4,250 +4,139 @@ document.addEventListener('DOMContentLoaded', () => {
   const carousel = document.getElementById('inertia-carousel');
   if (!carousel) return;
 
-  // 克隆首尾形成环状滚动
-  const originalSlides = Array.from(carousel.querySelectorAll('a'));
-  const firstClone = originalSlides[0].cloneNode(true);
-  const lastClone = originalSlides[originalSlides.length - 1].cloneNode(true);
-  carousel.appendChild(firstClone);
-  carousel.insertBefore(lastClone, originalSlides[0]);
+  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+  const slides = Array.from(carousel.querySelectorAll('a'));
 
-  let slides = carousel.querySelectorAll('a');
-  let slideGap = parseInt(getComputedStyle(carousel).gap || '16');
-  let slideWidth = slides[1].offsetWidth + slideGap;
+  // 克隆首尾以形成环状结构
+  const firstClone = slides[0].cloneNode(true);
+  const lastClone = slides[slides.length - 1].cloneNode(true);
+  carousel.appendChild(firstClone);
+  carousel.insertBefore(lastClone, slides[0]);
+
+  let allSlides = carousel.querySelectorAll('a');
   let currentIndex = 1;
 
-  let isDown = false;
-  let startX = 0;
-  let scrollLeft = 0;
-  let autoScrollTimer = null;
-  let momentumID = null;
-  let velocity = 0;
-  let lastX = 0;
-  let lastTime = 0;
-  let isTouchScrolling = false;
-  let isMouseDragging = false;
-
-  const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-  function getCenterOffset() {
-    return (carousel.offsetWidth - slideWidth) / 2;
-  }
-
-  function scrollToIndex(index, behavior = 'instant') {
-    const offset = getCenterOffset();
-    const scrollTarget = slideWidth * index - offset;
-    if (behavior === 'smooth') {
-      carousel.scrollTo({ left: scrollTarget, behavior: 'smooth' });
-    } else {
-      carousel.scrollLeft = scrollTarget;
-    }
-    updateSlideFocus(index);
-  }
-
-  function updateSlideFocus(index) {
-    slides.forEach((slide, i) => {
-      slide.style.transition = 'filter 0.5s ease, transform 0.5s ease';
-      if (i === index) {
-        slide.style.filter = 'brightness(1) saturate(1)';
+  function updateFocus() {
+    allSlides.forEach((slide, i) => {
+      slide.style.transition = 'transform 0.5s ease, filter 0.5s ease';
+      if (i === currentIndex) {
         slide.style.transform = 'scale(1)';
+        slide.style.filter = 'brightness(1)';
         slide.style.zIndex = '10';
       } else {
-        slide.style.filter = 'brightness(0.4) saturate(0.6)';
         slide.style.transform = 'scale(0.85)';
+        slide.style.filter = 'brightness(0.5)';
         slide.style.zIndex = '1';
       }
     });
   }
 
-  function goToSlide(index) {
+  function getSlideWidth() {
+    const style = getComputedStyle(allSlides[0]);
+    const gap = parseInt(style.marginRight || 0);
+    return allSlides[0].offsetWidth + gap;
+  }
+
+  function scrollToIndex(index) {
+    const slideWidth = getSlideWidth();
+    const centerOffset = (carousel.offsetWidth - slideWidth) / 2;
+    carousel.scrollTo({ left: index * slideWidth - centerOffset, behavior: 'smooth' });
     currentIndex = index;
-    scrollToIndex(index, 'smooth');
+    updateFocus();
   }
 
-  function startAutoScroll() {
-    clearInterval(autoScrollTimer);
-    autoScrollTimer = setInterval(() => {
-      goToSlide(currentIndex + 1);
-    }, 4000);
-  }
-
-  function stopAutoScroll() {
-    clearInterval(autoScrollTimer);
-  }
-
-  function seamlessLoop() {
-    const offset = getCenterOffset();
-    if (carousel.scrollLeft <= slideWidth * 0.3) {
-      carousel.scrollLeft = slideWidth * (slides.length - 2) - offset;
-      currentIndex = slides.length - 2;
-      updateSlideFocus(currentIndex);
-    } else if (carousel.scrollLeft >= slideWidth * (slides.length - 1.7)) {
-      carousel.scrollLeft = slideWidth - offset;
+  function checkLooping() {
+    const slideWidth = getSlideWidth();
+    const centerOffset = (carousel.offsetWidth - slideWidth) / 2;
+    const threshold = slideWidth * 0.3;
+    if (carousel.scrollLeft <= threshold) {
+      carousel.scrollLeft = slideWidth * (allSlides.length - 2) - centerOffset;
+      currentIndex = allSlides.length - 2;
+      updateFocus();
+    } else if (carousel.scrollLeft >= slideWidth * (allSlides.length - 1.7)) {
+      carousel.scrollLeft = slideWidth - centerOffset;
       currentIndex = 1;
-      updateSlideFocus(currentIndex);
+      updateFocus();
     }
   }
 
-  function applyMomentum(initialVelocity) {
-    let v = initialVelocity * 1000;
-    const decay = 0.92;
-    const minVelocity = 12;
-    cancelAnimationFrame(momentumID);
-
-    function step() {
-      if (Math.abs(v) < minVelocity) {
-        isTouchScrolling = false;
-        isMouseDragging = false;
-        return;
-      }
-      carousel.scrollLeft += v / 60;
-      v *= decay;
-      seamlessLoop();
-      momentumID = requestAnimationFrame(step);
-    }
-    step();
+  function handleResize() {
+    allSlides = carousel.querySelectorAll('a');
+    scrollToIndex(currentIndex);
   }
 
-  function recalcAndCenter() {
-    slides = carousel.querySelectorAll('a');
-    slideGap = parseInt(getComputedStyle(carousel).gap || '16');
-    slideWidth = slides[1].offsetWidth + slideGap;
-    scrollToIndex(currentIndex, 'instant');
-  }
-  window.addEventListener('resize', recalcAndCenter);
-  slides.forEach(slide => {
+  window.addEventListener('resize', handleResize);
+  allSlides.forEach(slide => {
     const img = slide.querySelector('img');
-    if (img && !img.complete) {
-      img.onload = recalcAndCenter;
-    }
+    if (img && !img.complete) img.onload = handleResize;
   });
 
-  slides.forEach(slide => {
-    slide.addEventListener('click', e => e.preventDefault());
-    slide.setAttribute('tabindex', '-1');
-  });
+  // 左右箭头控制（PC端）
+  if (!isTouchDevice) {
+    const leftArrow = document.createElement('button');
+    const rightArrow = document.createElement('button');
 
-  recalcAndCenter();
+    leftArrow.innerText = '<';
+    rightArrow.innerText = '>';
 
+    leftArrow.className = 'carousel-arrow carousel-arrow-left';
+    rightArrow.className = 'carousel-arrow carousel-arrow-right';
+
+    leftArrow.addEventListener('click', () => {
+      currentIndex = currentIndex - 1;
+      scrollToIndex(currentIndex);
+    });
+    rightArrow.addEventListener('click', () => {
+      currentIndex = currentIndex + 1;
+      scrollToIndex(currentIndex);
+    });
+
+    document.body.appendChild(leftArrow);
+    document.body.appendChild(rightArrow);
+  }
+
+  // 手机 touch 滚动
   if (isTouchDevice) {
-    carousel.style.scrollBehavior = 'auto';
     carousel.style.overflowX = 'scroll';
-    carousel.style.touchAction = 'pan-x';
+    carousel.style.scrollSnapType = 'x mandatory';
     carousel.style.webkitOverflowScrolling = 'touch';
 
-    carousel.addEventListener('touchstart', (e) => {
-      stopAutoScroll();
-      isDown = true;
-      isTouchScrolling = true;
-      startX = e.touches[0].pageX;
-      scrollLeft = carousel.scrollLeft;
-      lastX = e.touches[0].pageX;
-      lastTime = Date.now();
-      velocity = 0;
-      cancelAnimationFrame(momentumID);
-    }, { passive: true });
-
-    carousel.addEventListener('touchmove', (e) => {
-      if (!isDown) return;
-      const x = e.touches[0].pageX;
-      const walk = startX - x;
-      carousel.scrollLeft = scrollLeft + walk;
-
-      const now = Date.now();
-      const dt = now - lastTime;
-      if (dt > 0) {
-        velocity = (lastX - x) / dt;
-        lastX = x;
-        lastTime = now;
-      }
-      seamlessLoop();
-    }, { passive: true });
-
-    carousel.addEventListener('touchend', () => {
-      isDown = false;
-      if (Math.abs(velocity) > 0.05) {
-        applyMomentum(velocity);
-      } else {
-        isTouchScrolling = false;
-      }
-      startAutoScroll();
-    });
-
     carousel.addEventListener('scroll', () => {
-      if (isTouchScrolling) seamlessLoop();
-    });
-  } else {
-    carousel.style.scrollBehavior = 'auto';
-    carousel.style.overflowX = 'scroll';
-
-    carousel.addEventListener('mousedown', (e) => {
-      if (e.button !== 0) return;
-      stopAutoScroll();
-      isMouseDragging = true;
-      isDown = true;
-      startX = e.pageX;
-      scrollLeft = carousel.scrollLeft;
-      lastX = e.pageX;
-      lastTime = Date.now();
-      velocity = 0;
-      cancelAnimationFrame(momentumID);
-      e.preventDefault();
-    });
-
-    document.addEventListener('mousemove', (e) => {
-      if (!isMouseDragging || !isDown) return;
-      const x = e.pageX;
-      const walk = startX - x;
-      carousel.scrollLeft = scrollLeft + walk;
-
-      const now = Date.now();
-      const dt = now - lastTime;
-      if (dt > 0) {
-        velocity = (lastX - x) / dt;
-        lastX = x;
-        lastTime = now;
-      }
-      seamlessLoop();
-    });
-
-    document.addEventListener('mouseup', () => {
-      if (!isMouseDragging) return;
-      isMouseDragging = false;
-      isDown = false;
-      if (Math.abs(velocity) > 0.05) {
-        applyMomentum(velocity);
-      }
-      startAutoScroll();
-    });
-
-    document.addEventListener('mouseleave', () => {
-      if (isMouseDragging) {
-        isMouseDragging = false;
-        isDown = false;
-      }
-    });
-
-    carousel.addEventListener('wheel', () => {
-      stopAutoScroll();
-      seamlessLoop();
+      checkLooping();
     }, { passive: true });
-
-    carousel.addEventListener('scroll', () => {
-      if (isMouseDragging) seamlessLoop();
-    });
-
-    startAutoScroll();
-    carousel.addEventListener('mouseenter', stopAutoScroll);
-    carousel.addEventListener('mouseleave', startAutoScroll);
   }
 
-  carousel.style.scrollbarWidth = 'none';
-  carousel.style.msOverflowStyle = 'none';
-  carousel.classList.add('hide-scrollbar');
+  updateFocus();
+  scrollToIndex(currentIndex);
 
+  // 样式注入（隐藏滚动条+箭头）
   const style = document.createElement('style');
   style.innerHTML = `
-    #inertia-carousel::-webkit-scrollbar { display: none; }
+    #inertia-carousel {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    #inertia-carousel::-webkit-scrollbar {
+      display: none;
+    }
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(0,0,0,0.5);
+      color: white;
+      border: none;
+      font-size: 2rem;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      z-index: 100;
+    }
+    .carousel-arrow-left {
+      left: 10px;
+    }
+    .carousel-arrow-right {
+      right: 10px;
+    }
   `;
   document.head.appendChild(style);
 });
