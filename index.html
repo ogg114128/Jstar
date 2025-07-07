@@ -163,6 +163,25 @@
     <!-- 外部容器包裹，用于添加遮罩渐隐效果 -->
     <div class="carousel-container" style="transform: scale(1.15); transform-origin: center;">
       <div class="relative overflow-hidden">
+        <!-- 左箭头 -->
+        <button id="carousel-prev" aria-label="Previous" class="absolute left-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 rounded-full p-2 shadow hover:bg-opacity-90 z-20">
+           <!-- 简单箭头图标 -->
+          <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" >
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+
+         <!-- 轮播滑动区 -->
+         <div id="inertia-carousel" class="flex gap-4 overflow-x-scroll snap-x snap-mandatory scroll-smooth px-2">
+          <!-- 你的所有<a>图片项 -->
+         </div>
+
+        <!-- 右箭头 -->
+        <button id="carousel-next" aria-label="Next" class="absolute right-2 top-1/2 transform -translate-y-1/2 bg-white bg-opacity-70 rounded-full p-2 shadow hover:bg-opacity-90 z-20">
+         <svg class="w-6 h-6 text-gray-800" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" >
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+         </svg>
+        </button>  
         <div id="inertia-carousel" class="flex gap-4 overflow-x-scroll snap-x snap-mandatory scroll-smooth px-2" style="scroll-behavior: smooth; -webkit-overflow-scrolling: touch;">
           <a href="#" class="min-w-[288px] max-w-[288px] aspect-square bg-white border rounded-xl shadow transform transition-transform duration-500 ease-in-out snap-center">
             <img src="assets/420-sales.jpg" alt="420-sales" class="w-full h-full object-cover rounded-xl" />
